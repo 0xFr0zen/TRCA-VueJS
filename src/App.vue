@@ -56,8 +56,6 @@ export default {
     }
   },
   created() {
-    this.loadCommands();
-    this.loadRedeems();
   },
   methods: {
     showToast(title, description) {
