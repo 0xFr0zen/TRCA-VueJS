@@ -5,33 +5,8 @@
         <CHeading textAlign="center" pb="2" color="indigo.500">Twitch Redeem Command Alerts</CHeading>
         <CFlex justify="center" direction="column" p="4" w="50vw" h="auto" bg="gray.200" borderRadius="md">
           <CBox d="flex" flex-dir="column">
-            <CBox d="flex" w="100%">
-              <CText size="sm" color="indigo.500" p="2" fontWeight="500">Load Commands</CText>
-              <CIconButton @click="loadCommands" icon="search" />
-            </CBox>
-            <CBox>
-              <CHeading size="lg" d="flex" pb="2" color="indigo.500">Commands</CHeading>
-              <CBox>
-                <CStack spacing="5" is-inline mb="3">
-                  <CBox
-                    bg="indigo.300"
-                    borderRadius="md"
-                    v-for="command in commands"
-                    v-bind:key="command.id"
-                    p="4"
-                    border-width="1px"
-                    cursor="pointer"
-                  >
-                    <CHeading size="lg" color="white">!{{ command.name }}</CHeading>
-                    <CText mt="4" color="white">{{ command.text }}</CText>
-                    <CImage mt="4"></CImage>
-                  </CBox>
-                </CStack>
-                <CBox d="flex" flex-dir="row">
-                  Hello
-                </CBox>
-              </CBox>
-            </CBox>
+            <Commands />
+            <Redeems />
           </CBox>
         </CFlex>
       </CFlex>
@@ -40,19 +15,19 @@
 </template>
 
 <script>
-import { CBox, CFlex, CHeading, CStack, CText, CIconButton } from '@chakra-ui/vue';
+import { CBox, CFlex, CHeading } from '@chakra-ui/vue';
+import Commands from './components/Commands';
+import Redeems from './components/Redeems';
 import axios from 'axios';
-
 export default {
   name: 'App',
   inject: ['$chakraColorMode', '$toggleColorMode'],
   components: {
+    Commands,
+    Redeems,
     CBox,
     CFlex,
-    CHeading,
-    CStack,
-    CText,
-    CIconButton
+    CHeading
   },
   data() {
     return {
@@ -66,8 +41,7 @@ export default {
           bg: 'white',
           color: 'gray.900'
         }
-      },
-      commands: [{}]
+      }
     };
   },
   computed: {
@@ -81,6 +55,10 @@ export default {
       return this.$toggleColorMode;
     }
   },
+  created() {
+    this.loadCommands();
+    this.loadRedeems();
+  },
   methods: {
     showToast(title, description) {
       this.$toast({
@@ -93,10 +71,22 @@ export default {
         variant: 'solid'
       });
     },
-    async loadCommands() {
+    loadCommands() {
       axios
         .get('http://localhost:3000/u/oetziofficial/cs')
         .then(cs => (this.commands = cs.data))
+        .catch(e => console.error(e));
+    },
+    loadRedeems() {
+      axios
+        .get('http://localhost:3000/u/oetziofficial/rs')
+        .then(rs => (this.redeems = rs.data))
+        .catch(e => console.error(e));
+    },
+    getCommand(name) {
+      axios
+        .get(`http://localhost:3000/u/oetziofficial/c/${name}`)
+        .then(cs => (this.commands = [...cs.data]))
         .catch(e => console.error(e));
     }
   }
