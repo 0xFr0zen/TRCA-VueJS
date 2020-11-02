@@ -70,24 +70,6 @@ export default {
         position: 'bottom-right',
         variant: 'solid'
       });
-    },
-    loadCommands() {
-      axios
-        .get('http://localhost:3000/u/oetziofficial/cs')
-        .then(cs => (this.commands = cs.data))
-        .catch(e => console.error(e));
-    },
-    loadRedeems() {
-      axios
-        .get('http://localhost:3000/u/oetziofficial/rs')
-        .then(rs => (this.redeems = rs.data))
-        .catch(e => console.error(e));
-    },
-    getCommand(name) {
-      axios
-        .get(`http://localhost:3000/u/oetziofficial/c/${name}`)
-        .then(cs => (this.commands = [...cs.data]))
-        .catch(e => console.error(e));
     }
   }
 };
