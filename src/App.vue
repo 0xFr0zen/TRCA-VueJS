@@ -4,10 +4,7 @@
       <CFlex w="100vw" h="auto" flex-dir="column" p="2" align="center">
         <CHeading textAlign="center" pb="2" color="indigo.500">Twitch Redeem Command Alerts</CHeading>
         <CFlex justify="center" direction="column" p="4" w="50vw" h="auto" bg="gray.200" borderRadius="md">
-          <CBox d="flex" flex-dir="column">
-            <Commands />
-            <Redeems />
-          </CBox>
+          <Dashboard />
         </CFlex>
       </CFlex>
     </CBox>
@@ -16,15 +13,12 @@
 
 <script>
 import { CBox, CFlex, CHeading } from '@chakra-ui/vue';
-import Commands from './components/Commands';
-import Redeems from './components/Redeems';
-import axios from 'axios';
+import Dashboard from './components/Dashboard';
 export default {
   name: 'App',
   inject: ['$chakraColorMode', '$toggleColorMode'],
   components: {
-    Commands,
-    Redeems,
+    Dashboard,
     CBox,
     CFlex,
     CHeading
@@ -54,8 +48,6 @@ export default {
     toggleColorMode() {
       return this.$toggleColorMode;
     }
-  },
-  created() {
   },
   methods: {
     showToast(title, description) {

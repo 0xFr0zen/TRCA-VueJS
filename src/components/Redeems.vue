@@ -8,15 +8,7 @@
       </CInputGroup>
     </CFlex>
     <CBox>
-      <CSpinner
-        v-if="!hasRedeems"
-        thickness="2px"
-        speed="0.65s"
-        empty-color="indigo.100"
-        color="indigo.300"
-        size="md"
-      />
-      <CStack spacing="5" mb="3" v-if="hasRedeems">
+      <CStack spacing="5" mb="3">
         <CBox
           bg="indigo.300"
           borderRadius="md"
@@ -35,11 +27,11 @@
 </template>
 
 <script>
-import { CBox, CFlex, CHeading, CStack, CText, CInput, CInputGroup, CInputLeftElement, CSpinner } from '@chakra-ui/vue';
+import { CBox, CFlex, CHeading, CStack, CText, CInput, CInputGroup, CInputLeftElement } from '@chakra-ui/vue';
 import axios from 'axios';
 
 export default {
-  name: 'App',
+  name: 'Redeems',
   inject: ['$chakraColorMode', '$toggleColorMode'],
   components: {
     CBox,
@@ -49,24 +41,12 @@ export default {
     CText,
     CInput,
     CInputGroup,
-    CInputLeftElement,
-    CSpinner
+    CInputLeftElement
   },
   data() {
     return {
-      showModal: false,
-      mainStyles: {
-        dark: {
-          bg: 'gray.700',
-          color: 'whiteAlpha.900'
-        },
-        light: {
-          bg: 'white',
-          color: 'gray.900'
-        }
-      },
       redeeminput: '',
-      state: { redeems: [] }
+      redeems: []
     };
   },
   computed: {
@@ -78,26 +58,23 @@ export default {
     },
     toggleColorMode() {
       return this.$toggleColorMode;
+    },
+    hasRedeems() {
+      return this.redeems !== [];
     }
   },
   created() {
-    this.loadRedeems();
+    this.load();
   },
   methods: {
-    hasRedeems() {
-      return this.state.redeems !== [];
-    },
-    loadRedeems() {
+    load() {
       axios
         .get('http://localhost:3000/u/oetziofficial/rs')
-        .then(rs => (this.state.redeems = rs.data))
+        .then(rs => (this.redeems = rs.data))
         .catch(e => console.error(e));
     },
-    getRedeems(name) {
-      axios
-        .get(`http://localhost:3000/u/oetziofficial/r/${name}`)
-        .then(rs => (this.state.redeems = [...rs.data]))
-        .catch(e => console.error(e));
+    getRedeem(name) {
+      return this.redeems.filter(redeem => redeem.name === name)[0];
     }
   }
 };

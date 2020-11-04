@@ -30,7 +30,7 @@
 import { CBox, CFlex, CHeading, CStack, CText, CInput, CInputGroup, CInputLeftElement } from '@chakra-ui/vue';
 import axios from 'axios';
 export default {
-  name: 'App',
+  name: 'Commands',
   inject: ['$chakraColorMode', '$toggleColorMode'],
   components: {
     CBox,
@@ -44,17 +44,6 @@ export default {
   },
   data() {
     return {
-      showModal: false,
-      mainStyles: {
-        dark: {
-          bg: 'gray.700',
-          color: 'whiteAlpha.900'
-        },
-        light: {
-          bg: 'white',
-          color: 'gray.900'
-        }
-      },
       commandinput: '',
       commands: []
     };
