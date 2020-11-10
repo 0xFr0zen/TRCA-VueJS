@@ -8,11 +8,11 @@
       </CInputGroup>
     </CFlex>
     <CBox>
-      <CStack spacing="5" mb="3">
+      <CStack spacing="5" mb="3" v-if="typeof this.commands != 'undefined'">
         <CBox
           bg="indigo.300"
           borderRadius="md"
-          v-for="command in commands"
+          v-for="command in this.commands"
           v-bind:key="command.id"
           p="4"
           border-width="1px"
@@ -61,19 +61,17 @@ export default {
   },
   created() {
     this.loadCommands();
+    console.log(this.$SERVER_BACKEND);
   },
   methods: {
     loadCommands() {
       axios
-        .get('http://localhost:3000/u/oetziofficial/cs')
+        .get(`${this.$SERVER_BACKEND}/u/oetziofficial/cs`)
         .then(cs => (this.commands = cs.data))
         .catch(e => console.error(e));
     },
     getCommand(name) {
-      axios
-        .get(`http://localhost:3000/u/oetziofficial/c/${name}`)
-        .then(cs => (this.commands = [...cs.data]))
-        .catch(e => console.error(e));
+      return this.commands.filter(c => c.name === name)[0];
     }
   }
 };

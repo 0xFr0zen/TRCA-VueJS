@@ -45,7 +45,8 @@ export default {
     '@chakra-ui/nuxt',
     '@nuxtjs/emotion',
     // Doc: https://http.nuxtjs.org
-    '@nuxt/http'
+    '@nuxt/http',
+    'nuxt-material-design-icons'
   ],
   chakra: {
     extendTheme: {

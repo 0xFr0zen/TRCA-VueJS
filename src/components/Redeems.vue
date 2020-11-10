@@ -8,11 +8,11 @@
       </CInputGroup>
     </CFlex>
     <CBox>
-      <CStack spacing="5" mb="3">
+      <CStack spacing="5" mb="3" v-if="typeof this.commands != 'undefined'">
         <CBox
           bg="indigo.300"
           borderRadius="md"
-          v-for="redeem in state.redeems"
+          v-for="redeem in this.redeems"
           v-bind:key="redeem.id"
           p="4"
           border-width="1px"
@@ -69,7 +69,7 @@ export default {
   methods: {
     load() {
       axios
-        .get('http://localhost:3000/u/oetziofficial/rs')
+        .get(`${this.$SERVER_BACKEND}/u/oetziofficial/rs`)
         .then(rs => (this.redeems = rs.data))
         .catch(e => console.error(e));
     },

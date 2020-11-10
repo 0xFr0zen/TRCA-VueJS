@@ -1,6 +1,6 @@
 <template>
   <CBox>
-    <CFlex v-if="!$parent.login && !loginvisible" direction="column">
+    <CFlex direction="column">
       <CBox w="100%" direction="flex-start" p="2" textAlign="center"
         >You are currently not logged in, please Login</CBox
       >
@@ -17,7 +17,6 @@
 import { CBox, CButton, CFlex, CLink } from '@chakra-ui/vue';
 
 export default {
-  name: 'Login',
   inject: ['$chakraColorMode', '$toggleColorMode'],
   components: {
     CBox,
@@ -27,7 +26,6 @@ export default {
   },
   data() {
     return {
-      loginvisible: false,
       port: 3000,
       scopes: ['user:edit']
     };
