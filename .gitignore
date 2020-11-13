@@ -10,5 +10,7 @@ npm-debug.log
 yarn-error.log
 config.json
 *.nuxt
+test
+test/*
 
 # End of https://www.toptal.com/developers/gitignore/api/vuejs

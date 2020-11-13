@@ -1,16 +1,7 @@
 global.HTMLElement = typeof window === 'undefined' ? Object : window.HTMLElement;
 
 export default {
-  /*
-   ** Rendering mode
-   ** Doc: https://nuxtjs.org/api/configuration-mode
-   */
   ssr: true,
-
-  /*
-   ** Headers of the page
-   ** Doc: https://vue-meta.nuxtjs.org/api/#metainfo-properties
-   */
   head: {
     title: 'TRCA',
     meta: [
@@ -25,29 +16,11 @@ export default {
     // link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
-  /*
-   ** Global CSS
-   ** Doc: https://nuxtjs.org/api/configuration-css
-   */
   css: [],
 
-  /*
-   ** Plugins to load before mounting the App
-   ** Doc: https://nuxtjs.org/guide/plugins
-   */
   plugins: ['plugins/chakra-ui'],
 
-  /*
-   ** Nuxt.js modules
-   ** Doc: https://nuxtjs.org/guide/modules
-   */
-  modules: [
-    '@chakra-ui/nuxt',
-    '@nuxtjs/emotion',
-    // Doc: https://http.nuxtjs.org
-    '@nuxt/http',
-    'nuxt-material-design-icons'
-  ],
+  modules: ['@chakra-ui/nuxt', '@nuxtjs/emotion', '@nuxt/http', '@nuxtjs/axios', 'nuxt-material-design-icons'],
   chakra: {
     extendTheme: {
       colors: {
@@ -55,9 +28,13 @@ export default {
       }
     }
   },
-  /*
-   ** HTTP module configuration
-   */
+  axios: {
+    proxy: true,
+    retry: { retries: 3 },
+  },
+  proxy: {
+    '/api/': { target: 'http://localhost:3000', pathRewrite: { '^/api/': '' } }
+  },
   http: {
     // See https://http.nuxtjs.org/api/#options
   },

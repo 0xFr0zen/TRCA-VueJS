@@ -16,6 +16,7 @@
 <script>
 import { CBox, CButton, CFlex, CLink } from '@chakra-ui/vue';
 
+const config = require('../../config.json');
 export default {
   inject: ['$chakraColorMode', '$toggleColorMode'],
   components: {
@@ -36,7 +37,7 @@ export default {
       this.loginvisible = true;
     },
     loginLink() {
-      let clientID = this.$CLIENT_ID;
+      let clientID = config.client_id;
       if (!clientID) throw Error('no client ID');
       return `https://id.twitch.tv/oauth2/authorize?response_type=code&client_id=${clientID}&redirect_uri=http://localhost:${
         this.port
