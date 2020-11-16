@@ -26,7 +26,7 @@
         color="white"
         align="flex-end"
         p="2"
-        >{{ !search ? 'search' : 'close' }}</CBox
+        >{{ tmmode }}</CBox
       >
     </CFlex>
     <CBox>
@@ -54,7 +54,7 @@
           border="1px solid rgba(255, 255, 255, 0.1)"
           cursor="pointer"
         >
-          <CText color="white" textTransform="uppercase">{{ stm.name }}</CText>
+          <CText color="white">{{ $props.mod === 'cs' ? '!' : '' }}{{ stm.name }}</CText>
         </CPseudoBox>
       </CStack>
       <CPseudoBox
@@ -96,7 +96,14 @@ export default {
     title: ''
   },
   data() {
-    return { search: false, loading: true, selectedtwitchmodules: undefined, twitchmodules: undefined, error: false };
+    return {
+      search: false,
+      loading: true,
+      selectedtwitchmodules: undefined,
+      twitchmodules: undefined,
+      error: false,
+      tmmode: 'search'
+    };
   },
   computed: {
     colorMode() {
@@ -119,6 +126,7 @@ export default {
       });
     },
     toggleSearch: function() {
+      this.tmmode = 'close';
       this.search = !this.search;
 
       this.$nextTick(() => {
@@ -139,6 +147,7 @@ export default {
           this.loading = false;
         })
         .catch(e => {
+          this.tmmode = 'warning';
           this.error = e;
         });
     },
@@ -149,6 +158,7 @@ export default {
     checkESC: function(e) {
       if (e.keyCode === 27) {
         this.search = false;
+        this.tmmode = 'search';
       }
     }
   }
