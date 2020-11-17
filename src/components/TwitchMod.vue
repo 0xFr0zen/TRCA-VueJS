@@ -10,24 +10,28 @@
         type="phone"
         :placeholder="'Search ' + this.$props.title"
         color="white"
-        variant="filled"
+        variant="unstyled"
+        pl="4"
+        pr="0"
         @keyup="checkESC"
         focusBorderColor="transparent"
       />
 
-      <CFlex p="2" flex-direction="row" v-if="this.loading">
+      <CFlex p="3" flex-direction="row" v-if="this.loading">
         <CSpinner align="center" color="indigo.100" thickness="1px" size="sm" />
       </CFlex>
       <CBox
         cursor="pointer"
-        @click="toggleSearch"
-        v-if="!this.loading"
+        v-if="!this.loading && !error"
+        @click="this.load"
         class="material-icons"
-        color="white"
-        align="flex-end"
+        color="gray.100"
         p="2"
-        >{{ tmmode }}</CBox
+        >cached</CBox
       >
+      <CBox cursor="pointer" @click="toggleSearch" v-if="!this.loading" class="material-icons" color="white" p="2">{{
+        tmmode
+      }}</CBox>
     </CFlex>
     <CBox>
       <CPseudoBox
@@ -43,40 +47,44 @@
         :_active="{ bg: 'white.300' }"
         >warning</CPseudoBox
       >
-      <CStack spacing="0" v-if="this.selectedtwitchmodules && !loading && !error">
-        <CPseudoBox
-          bg="indigo.300"
-          :_hover="{ bg: 'indigo.200' }"
-          :_active="{ bg: 'indigo.400' }"
-          v-for="stm in this.selectedtwitchmodules"
-          v-bind:key="stm.id"
-          p="4"
-          border="1px solid rgba(255, 255, 255, 0.1)"
-          cursor="pointer"
-        >
-          <CText color="white">{{ $props.mod === 'cs' ? '!' : '' }}{{ stm.name }}</CText>
+      <CBox minHeight="50px">
+        <CPseudoBox bg="indigo.300" p="4" v-if="this.selectedtwitchmodules && this.selectedtwitchmodules.length === 0">
+          <CText color="white">No Command</CText>
         </CPseudoBox>
-      </CStack>
-      <CPseudoBox
-        p="2"
-        cursor="pointer"
-        color="white"
-        bg="indigo.300"
-        :_hover="{ bg: 'indigo.200' }"
-        :_active="{ bg: 'indigo.400' }"
-        @click="this.load"
-        v-if="!this.loading && !error"
-      >
-        <CText align="center">
-          Reload
-        </CText>
-      </CPseudoBox>
+        <CStack
+          spacing="0"
+          v-if="this.selectedtwitchmodules && this.selectedtwitchmodules.length > 0 && !loading && !error"
+        >
+          <CPseudoBox
+            bg="indigo.300"
+            :_active="{ bg: 'indigo.400' }"
+            v-for="stm in this.selectedtwitchmodules"
+            v-bind:key="stm.id"
+            p="4"
+            @click="chooseMod(stm)"
+            borderBottom="1px solid rgba(255, 255, 255, 0.1)"
+            cursor="pointer"
+          >
+            <CText color="white">{{ $props.mod === 'cs' ? '!' : '' }}{{ stm.name }}</CText>
+          </CPseudoBox>
+        </CStack>
+        <CPseudoBox
+          p="4"
+          bg="indigo.300"
+          color="white"
+          cursor="pointer"
+          :_active="{ bg: 'indigo.400' }"
+          @click="openParentModal"
+        >
+          New Command
+        </CPseudoBox>
+      </CBox>
     </CBox>
   </CBox>
 </template>
 
 <script>
-import { CBox, CFlex, CHeading, CStack, CText, CInput, CInputGroup, CInputLeftElement } from '@chakra-ui/vue';
+import { CBox, CFlex, CHeading, CStack, CText, CInput, CInputGroup, CInputLeftElement, CLink } from '@chakra-ui/vue';
 
 export default {
   name: 'TwitchMod',
@@ -126,7 +134,7 @@ export default {
       });
     },
     toggleSearch: function() {
-      this.tmmode = 'close';
+      this.tmmode = this.search ? 'search' : 'close';
       this.search = !this.search;
 
       this.$nextTick(() => {
@@ -160,6 +168,12 @@ export default {
         this.search = false;
         this.tmmode = 'search';
       }
+    },
+    chooseMod: function(mod) {
+      console.log(mod);
+    },
+    openParentModal: function() {
+      this.$emit('openModal', null);
     }
   }
 };
