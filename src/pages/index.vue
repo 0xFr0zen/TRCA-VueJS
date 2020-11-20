@@ -1,5 +1,5 @@
 <template>
-  <CBox d="flex" w="100vw" h="100vh" p="2" bg="gray.900">
+  <CBox d="flex" w="100vw" h="100vh" p="2" bg="#10002B">
     <CFlex direction="column" w="100vw" h="auto">
       <CFlex m="auto" direction="column" align="center">
         <CHeading color="white" align="center" :fontSize="['1em', '2em', '4em', '6em']">TRCA</CHeading>

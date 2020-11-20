@@ -12,25 +12,25 @@ export default {
         name: 'description',
         content: 'Official Nuxt.js starter for CodeSandBox'
       }
+    ],
+    link: [
+      {
+        href: 'https://fonts.googleapis.com/css?family=Material+Icons+Round',
+        rel: 'stylesheet'
+      }
     ]
     // link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }]
   },
 
-  css: [],
+  css: ['@/assets/css/styles.css'],
 
   plugins: ['plugins/chakra-ui'],
 
-  modules: ['@chakra-ui/nuxt', '@nuxtjs/emotion', '@nuxt/http', '@nuxtjs/axios', 'nuxt-material-design-icons'],
-  chakra: {
-    extendTheme: {
-      colors: {
-        brand: {}
-      }
-    }
-  },
+  modules: ['@chakra-ui/nuxt', '@nuxtjs/emotion', '@nuxt/http', '@nuxtjs/axios'],
+  chakra: {},
   axios: {
     proxy: true,
-    retry: { retries: 3 },
+    retry: { retries: 3 }
   },
   proxy: {
     '/api/': { target: 'http://localhost:3000', pathRewrite: { '^/api/': '' } }

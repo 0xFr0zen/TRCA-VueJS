@@ -1,7 +1,7 @@
 <template>
-  <CBox w="100%" bg="indigo.600">
-    <CFlex w="100%" pt="2" pb="2">
-      <CHeading size="md" color="white" align="flex-start" m="auto" ml="0px" pt="1" pl="3" mb="2" v-if="!search">{{
+  <CBox w="100%">
+    <CFlex w="100%" pl="3" pr="3" pt="2" pb="2">
+      <CHeading size="md" color="white" align="flex-start" m="auto" ml="0px" pt="1" mb="2" v-if="!search">{{
         this.$props.title
       }}</CHeading>
       <CInput
@@ -11,27 +11,54 @@
         :placeholder="'Search ' + this.$props.title"
         color="white"
         variant="unstyled"
-        pl="4"
+        pl="2"
         pr="0"
         @keyup="checkESC"
         focusBorderColor="transparent"
       />
-
-      <CFlex p="3" flex-direction="row" v-if="this.loading">
-        <CSpinner align="center" color="indigo.100" thickness="1px" size="sm" />
-      </CFlex>
-      <CBox
+      <CPseudoBox
+        bg="transparent"
+        p="6px"
+        w="2.1rem"
+        h="2.1rem"
+        textAlign="center"
+        borderRadius="md"
         cursor="pointer"
-        v-if="!this.loading && !error"
-        @click="this.load"
-        class="material-icons"
-        color="gray.100"
-        p="2"
-        >cached</CBox
+        color="white"
       >
-      <CBox cursor="pointer" @click="toggleSearch" v-if="!this.loading" class="material-icons" color="white" p="2">{{
-        tmmode
-      }}</CBox>
+        <CSpinner align="center" v-if="this.loading" thickness="1px" size="sm" />
+      </CPseudoBox>
+      <CFlex v-if="!this.loading && !error">
+        <CPseudoBox
+          bg="darken"
+          :_hover="{ bg: 'lighten' }"
+          p="6px"
+          w="2rem"
+          h="2rem"
+          textAlign="center"
+          borderRadius="md"
+          cursor="pointer"
+          color="white"
+          @click="toggleSearch"
+        >
+          <CBox class="material-icons material-icons-round" fontSize="1.3em">{{ tmmode }}</CBox>
+        </CPseudoBox>
+        <CPseudoBox
+          bg="darken"
+          :_hover="{ bg: 'lighten' }"
+          p="6px"
+          w="2rem"
+          h="2rem"
+          textAlign="center"
+          borderRadius="md"
+          cursor="pointer"
+          color="white"
+          ml="2"
+          @click="load"
+        >
+          <CBox class="material-icons material-icons-round" fontSize="1.3em">autorenew</CBox>
+        </CPseudoBox>
+      </CFlex>
     </CFlex>
     <CBox>
       <CPseudoBox
@@ -48,35 +75,42 @@
         >warning</CPseudoBox
       >
       <CBox minHeight="50px">
-        <CPseudoBox bg="indigo.300" p="4" v-if="this.selectedtwitchmodules && this.selectedtwitchmodules.length === 0">
+        <CPseudoBox bg="darken" p="4" v-if="this.selectedtwitchmodules && this.selectedtwitchmodules.length === 0">
           <CText color="white">No Command</CText>
         </CPseudoBox>
         <CStack
-          spacing="0"
+          spacing="2"
+          p="3"
           v-if="this.selectedtwitchmodules && this.selectedtwitchmodules.length > 0 && !loading && !error"
         >
           <CPseudoBox
-            bg="indigo.300"
-            :_active="{ bg: 'indigo.400' }"
+            bg="darken"
+            :_hover="{ bg: 'lighten' }"
             v-for="stm in this.selectedtwitchmodules"
             v-bind:key="stm.id"
-            p="4"
+            p="2"
+            borderRadius="md"
             @click="chooseMod(stm)"
-            borderBottom="1px solid rgba(255, 255, 255, 0.1)"
             cursor="pointer"
           >
             <CText color="white">{{ $props.mod === 'cs' ? '!' : '' }}{{ stm.name }}</CText>
           </CPseudoBox>
         </CStack>
         <CPseudoBox
-          p="4"
-          bg="indigo.300"
-          color="white"
+          m="2"
+          p="2"
+          borderRadius="md"
+          bg="trca.700"
+          color="background"
           cursor="pointer"
-          :_active="{ bg: 'indigo.400' }"
+          :_hover="{ bg: 'trca.750' }"
+          :_active="{ bg: 'trca.775' }"
           @click="openParentModal"
+          textTransform="uppercase"
+          textAlign="center"
+          fontWeight="bold"
         >
-          New Command
+          new command
         </CPseudoBox>
       </CBox>
     </CBox>
@@ -84,7 +118,18 @@
 </template>
 
 <script>
-import { CBox, CFlex, CHeading, CStack, CText, CInput, CInputGroup, CInputLeftElement, CLink } from '@chakra-ui/vue';
+import {
+  CBox,
+  CFlex,
+  CHeading,
+  CStack,
+  CText,
+  CInput,
+  CInputGroup,
+  CInputLeftElement,
+  CLink,
+  CPseudoBox
+} from '@chakra-ui/vue';
 
 export default {
   name: 'TwitchMod',
@@ -97,7 +142,8 @@ export default {
     CText,
     CInput,
     CInputGroup,
-    CInputLeftElement
+    CInputLeftElement,
+    CPseudoBox
   },
   props: {
     mod: '',
@@ -128,6 +174,9 @@ export default {
     this.load();
   },
   methods: {
+    getBackground(name) {
+      return 'darken';
+    },
     sleep: async function(time) {
       return new Promise(resolve => {
         setTimeout(resolve, time);
@@ -173,7 +222,7 @@ export default {
       console.log(mod);
     },
     openParentModal: function() {
-      this.$emit('openModal', null);
+      this.$emit('openModal', this.$props.title);
     }
   }
 };
